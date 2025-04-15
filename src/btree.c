@@ -168,4 +168,20 @@ void delete_node(Table* table, int key) {
 
     printf("Deleted key %d successfully.\n", key);
 }
+void print_btree(BTreeNode* node, int level) {
+    if (node == NULL) return;
 
+    for (int i = node->num_keys - 1; i >= 0; i--) {
+        if (!node->is_leaf) {
+            print_btree(node->children[i + 1], level + 1);
+        }
+
+        for (int j = 0; j < level; j++) printf("  ");
+        printf("(%d) %s, %d\n", node->keys[i], node->values[i].name, node->values[i].age);
+    }
+
+    if (!node->is_leaf) {
+        print_btree(node->children[0], level + 1);
+    }
+}
+ 

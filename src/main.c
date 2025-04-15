@@ -23,13 +23,18 @@ int main() {
             if (sscanf(input, "INSERT INTO table VALUES (%d, '%49[^']', %d)", &id, name, &age) == 3) {
                 Row row = {id, "", age};
                 strncpy(row.name, name, sizeof(row.name) - 1);
-                insert_node(&table, id, row);
-                printf("Inserted (%d, %s, %d)\n", id, row.name, row.age);
+
+                if (search_node(&table, id) != NULL) {
+                    printf("Error: A row with id %d already exists.\n", id);
+                } else {
+                    insert_node(&table, id, row);
+                    printf("Inserted (%d, %s, %d)\n", id, row.name, row.age);
+                }
             } else {
                 printf("Syntax error in INSERT command.\n");
             }
-
-        } else if (strncmp(input, "SELECT", 6) == 0) {
+        }
+         else if (strncmp(input, "SELECT", 6) == 0) {
             int id;
             if (sscanf(input, "SELECT * FROM table WHERE id=%d", &id) == 1) {
                 Row* result = search_node(&table, id);

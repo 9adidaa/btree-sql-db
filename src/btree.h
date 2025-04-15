@@ -24,8 +24,11 @@ typedef struct {
 } Table;
 
 // Function declarations
+BTreeNode* create_node(int is_leaf);
 void insert_node(Table* table, int key, Row row);
 Row* search_node(Table* table, int key);
 void delete_node(Table* table, int key);
+void print_btree(BTreeNode* node, int level);
+
 
 #endif

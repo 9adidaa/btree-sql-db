@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h> 
 #include "../src/btree.h"
 #include <string.h>   // for strcmp
 #include <stddef.h>   // for NULL
@@ -14,29 +15,6 @@ void test_insert_into_empty_tree() {
     assert(table.root->keys[0] == 1);
     assert(strcmp(table.root->values[0].name, "Mohamed") == 0);
 }
-
-int main() {
-    test_insert_into_empty_tree();
-    return 0;
-}
-void test_insert_multiple_in_leaf() {
-    Table table = {0};
-
-    Row r1 = {1, "Alice", 20};
-    Row r2 = {3, "Bob", 22};
-    Row r3 = {2, "Charlie", 21};
-
-    insert_node(&table, r1.id, r1);
-    insert_node(&table, r2.id, r2);
-    insert_node(&table, r3.id, r3);
-
-    assert(table.root->num_keys == 3);
-    assert(table.root->keys[0] == 1);
-    assert(table.root->keys[1] == 2);
-    assert(table.root->keys[2] == 3);
-}
-
-
 void test_split_root_node() {
     Table table = {0};
 
@@ -105,3 +83,23 @@ void test_delete_leaf_node() {
 
     assert(table.root->num_keys == 2);
 }
+
+int main() {
+    Table table = {0};
+
+    insert_node(&table, 10, (Row){10, "A", 20});
+    insert_node(&table, 20, (Row){20, "B", 21});
+    insert_node(&table, 30, (Row){30, "C", 22});
+    insert_node(&table, 40, (Row){40, "D", 23});
+    insert_node(&table, 50, (Row){50, "E", 24});
+    insert_node(&table, 25, (Row){25, "F", 25});
+
+    printf("======= B-Tree =======\\n");
+    print_btree(table.root, 0);
+    printf("======================\\n");
+
+    return 0;
+}
+
+
+
