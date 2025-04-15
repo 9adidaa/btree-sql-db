@@ -129,4 +129,43 @@ Row* search_node(Table* table, int key) {
     }
 }
 
-// TODO: implement delete_node
+void delete_node(Table* table, int key) {
+    if (table->root == NULL) return;
+
+    BTreeNode* node = table->root;
+
+    // Traverse down to a leaf
+    while (!node->is_leaf) {
+        int i = 0;
+        while (i < node->num_keys && key > node->keys[i]) {
+            i++;
+        }
+        node = node->children[i];
+    }
+
+    // Try to delete from the leaf
+    int found = -1;
+    for (int i = 0; i < node->num_keys; i++) {
+        if (node->keys[i] == key) {
+            found = i;
+            break;
+        }
+    }
+
+    if (found == -1) {
+        printf("Key %d not found.\n", key);
+        return;
+    }
+
+    // Shift keys/values left to remove key
+    for (int i = found; i < node->num_keys - 1; i++) {
+        node->keys[i] = node->keys[i + 1];
+        node->values[i] = node->values[i + 1];
+    }
+
+    node->num_keys--;
+    table->num_rows--;
+
+    printf("Deleted key %d successfully.\n", key);
+}
+

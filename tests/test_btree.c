@@ -86,3 +86,22 @@ void test_search_node() {
     Row* not_found = search_node(&table, 99);
     assert(not_found == NULL);
 }
+
+void test_delete_leaf_node() {
+    Table table = {0};
+
+    Row r1 = {1, "Alice", 20};
+    Row r2 = {2, "Bob", 21};
+    Row r3 = {3, "Charlie", 22};
+
+    insert_node(&table, r1.id, r1);
+    insert_node(&table, r2.id, r2);
+    insert_node(&table, r3.id, r3);
+
+    delete_node(&table, 2);
+
+    Row* result = search_node(&table, 2);
+    assert(result == NULL);
+
+    assert(table.root->num_keys == 2);
+}
