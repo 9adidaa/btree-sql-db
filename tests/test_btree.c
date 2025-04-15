@@ -35,3 +35,35 @@ void test_insert_multiple_in_leaf() {
     assert(table.root->keys[1] == 2);
     assert(table.root->keys[2] == 3);
 }
+
+
+void test_split_root_node() {
+    Table table = {0};
+
+    // Insert 4 rows (triggers root split at 4th insert)
+    Row r1 = {10, "A", 20};
+    Row r2 = {20, "B", 21};
+    Row r3 = {30, "C", 22};
+    Row r4 = {40, "D", 23};  // This one causes root to split
+
+    insert_node(&table, r1.id, r1);
+    insert_node(&table, r2.id, r2);
+    insert_node(&table, r3.id, r3);
+    insert_node(&table, r4.id, r4);
+
+    // Assertions
+    assert(table.root != NULL);
+    assert(table.root->is_leaf == 0);  // Root should now be internal
+    assert(table.root->num_keys == 1); // One promoted key
+    assert(table.root->keys[0] == 20); // Middle key promoted
+
+    BTreeNode* left = table.root->children[0];
+    BTreeNode* right = table.root->children[1];
+
+    assert(left->num_keys == 1);
+    assert(left->keys[0] == 10);
+
+    assert(right->num_keys == 2);
+    assert(right->keys[0] == 30);
+    assert(right->keys[1] == 40);
+}
