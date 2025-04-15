@@ -103,5 +103,30 @@ void insert_node(Table* table, int key, Row row) {
     table->num_rows++;
 }
 
-// TODO: implement search_node
+Row* search_node(Table* table, int key) {
+    if (table->root == NULL) return NULL;
+
+    BTreeNode* current = table->root;
+
+    while (1) {
+        int i = 0;
+        while (i < current->num_keys && key > current->keys[i]) {
+            i++;
+        }
+
+        // If found, return the value
+        if (i < current->num_keys && key == current->keys[i]) {
+            return &current->values[i];
+        }
+
+        // If it's a leaf, key doesn't exist
+        if (current->is_leaf) {
+            return NULL;
+        }
+
+        // Go deeper
+        current = current->children[i];
+    }
+}
+
 // TODO: implement delete_node
