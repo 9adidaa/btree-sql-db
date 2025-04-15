@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main() {
-    printf("Welcome to your B-tree based database!\n");
-    // TODO: REPL loop
+    test_insert_into_empty_tree();
+    test_insert_multiple_in_leaf();
     return 0;
 }

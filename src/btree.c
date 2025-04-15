@@ -23,7 +23,26 @@ void insert_node(Table* table, int key, Row row) {
         return;
     }
 
-    // TODO: Handle insert if root is not empty
+    
+    if (table->root->num_keys < MAX_KEYS) {
+        BTreeNode* root = table->root;
+
+        // Find position to insert key (keep sorted order)
+        int i = root->num_keys - 1;
+        while (i >= 0 && key < root->keys[i]) {
+            root->keys[i + 1] = root->keys[i];
+            root->values[i + 1] = root->values[i];
+            i--;
+        }
+
+        // Insert new key and value
+        root->keys[i + 1] = key;
+        root->values[i + 1] = row;
+        root->num_keys++;
+        table->num_rows++;
+        return;
+    }
+
 }
 
 // TODO: implement search_node
