@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "btree.h"
+#include "db.h"
 
 #define INPUT_SIZE 256
 
 int main() {
     Table table = {0};
+    load_from_file(&table, "data.db");
     char input[INPUT_SIZE];
 
     while (1) {
@@ -29,6 +31,7 @@ int main() {
                 } else {
                     insert_node(&table, id, row);
                     printf("Inserted (%d, %s, %d)\n", id, row.name, row.age);
+                    save_to_file(&table, "data.db");
                 }
             } else {
                 printf("Syntax error in INSERT command.\n");
