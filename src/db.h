@@ -5,5 +5,6 @@
 
 void save_to_file(Table* table, const char* filename);
 void load_from_file(Table* table, const char* filename);
+void load_csv_into_table(Table* table, const char* filename);
 
 #endif
